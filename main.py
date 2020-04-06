@@ -32,7 +32,7 @@ if __name__ == "__main__":
             state = next_state
             if done:
                 final_battery = state[0]
-                print("episode: {}/{}, detect event: {}/{}, initial battery: {:.2}, final battery: {:.2}, end time: {}, e: {:.2}"
+                print("episode: {}/{}, detect event: {}/{}, initial battery: {:.2f}, final battery: {:.2f}, end time: {}, e: {:.2}"
                       .format(e, EPISODES, success_detect, event_num, init_battery[0], final_battery[0], time, agent.epsilon))
                 break
             if len(agent.memory) > batch_size:

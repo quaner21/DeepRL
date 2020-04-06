@@ -8,7 +8,7 @@ class Environment:
     def __init__(self):
         self.total_T = 1440  # 30s interval for 12h
         self.min_battery = 0.0
-        self.max_battery = 100.0  # mAh
+        self.max_battery = 560.0  # mAh
         self.event_prob = 0.04
         self.event_span = 10
         self.event_detect_reward = 10.0
