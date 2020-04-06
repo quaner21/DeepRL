@@ -1,5 +1,9 @@
 from environment import Environment
 from agent import DQNAgent
+import numpy as np
+import matplotlib.pyplot as plt
+
+EPISODES = 1000
 
 if __name__ == "__main__":
     env = Environment()
