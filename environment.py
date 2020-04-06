@@ -15,7 +15,7 @@ class Environment:
 
         self.action_space = ['I', 'S', 'H']
 
-        self.time = 0
+        self.time = int(0)
         self.battery = np.random.uniform(self.min_battery, self.max_battery)
         self.event = False
         self.event_counter = None
@@ -25,11 +25,12 @@ class Environment:
         state = self.state
         battery, time = state
 
-        if action == 'I':
+        # action_list = {'I', 'S', 'H'}
+        if action == 0:
             battery += -10 * 30 / 3600
-        elif action == 'S':
+        elif action == 1:
             battery += -30 * 30 / 3600
-        elif action == 'H':
+        elif action == 2:
             battery += 75 * 30 / 3600
 
         battery = min(max(battery, self.min_battery), self.max_battery)
@@ -54,7 +55,7 @@ class Environment:
 
         if not done:
             reward = 1.0
-            if self.event == True and action == 'S':
+            if self.event == True and action == 1:
                 reward += self.event_detect_reward
         else:
             reward = 0.0
