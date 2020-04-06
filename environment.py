@@ -59,7 +59,7 @@ class Environment:
         else:
             reward = 0.0
 
-        return np.array(self.state), reward, done
+        return np.array(self.state), reward, self.event, done
 
     def reset(self):
         self.time = 0

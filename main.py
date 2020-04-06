@@ -18,7 +18,7 @@ if __name__ == "__main__":
         state = np.reshape(state, [1, state_size])
         for time in range(1440):
             action = agent.act(state)
-            next_state, reward, done = env.step(action)
+            next_state, reward, event, done = env.step(action)
             reward = reward if not done else -10
             next_state = np.reshape(next_state, [1, state_size])
             agent.memorize(state, action, reward, next_state, done)
