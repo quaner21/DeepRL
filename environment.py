@@ -8,7 +8,7 @@ class Environment:
     def __init__(self):
         self.total_T = 1440  # 30s interval for 12h
         self.min_battery = 0.0
-        self.max_battery = 560.0  # mAh
+        self.max_battery = 280.0  # mAh
         self.event_prob = 0.04
         self.event_span = 10
         self.event_detect_reward = 10.0
@@ -16,7 +16,7 @@ class Environment:
         self.action_space = ['I', 'S', 'H']
 
         self.time = int(0)
-        self.battery = np.random.uniform(self.min_battery, self.max_battery)
+        self.battery = self.max_battery # np.random.uniform(self.min_battery, self.max_battery)
         self.event = False
         self.event_counter = None
         self.state = (self.battery, self.time)
@@ -64,7 +64,7 @@ class Environment:
 
     def reset(self):
         self.time = 0
-        self.battery = np.random.uniform(self.min_battery, self.max_battery)
+        self.battery = self.max_battery # np.random.uniform(self.min_battery, self.max_battery)
         self.event = False
         self.event_counter = None
         self.state = (self.battery, self.time)
