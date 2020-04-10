@@ -1,12 +1,15 @@
 # DeepRL
 
-Goal:
+#Goal:
+
 This project aims to optimize the energy use of an energy-harvesting IoT sensor, while maintaining its detection accuracy
 
-Approach:
+#Approach:
+
 Deep Q-learning
 
-Scenario:
+#Scenario:
+
 State: {(battery, t)}
 
 Action: {idle, sense, harvest}
