@@ -20,6 +20,13 @@ if __name__ == "__main__":
         event_num = 0
         detect_num = 0
         total_reward = 0
+        output_episode = []
+        output_detect_num = []
+        output_event_num = []
+        output_final_battery = []
+        output_endtime = []
+        output_total_reward = []
+
         for time in range(1440):
             action = agent.act(state)
             next_state, reward, event, done = env.step(action)
@@ -27,7 +34,6 @@ if __name__ == "__main__":
                 event_num += 1
                 if action == 1:  # action_list = {'I', 'S', 'H'}
                     detect_num += 1
-            reward = reward if not done else -10
             total_reward += reward
             next_state = np.reshape(next_state, [1, state_size])
             agent.memorize(state, event, action, reward, next_state, done)

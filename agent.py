@@ -11,7 +11,7 @@ class DQNAgent:
         self.state_size = state_size
         self.action_size = action_size
         #self.action_list = {'I', 'S', 'H'}
-        self.memory = deque(maxlen=2000)
+        self.memory = deque(maxlen=500)
         self.gamma = 0.95    # discount rate
         self.epsilon = 1.0  # exploration rate
         self.epsilon_min = 0.01

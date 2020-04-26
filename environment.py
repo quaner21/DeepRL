@@ -11,7 +11,7 @@ class Environment:
         self.max_battery = 200.0  # mAh
         self.event_prob = 0.04
         self.event_span = 10
-        self.event_detect_reward = 10.0
+        self.event_detect_reward = 1.0
 
         #self.action_space = ['I', 'S', 'H']
 
@@ -24,6 +24,7 @@ class Environment:
     def step(self, action):
         state = self.state
         battery, time = state
+        last_battery = battery
 
         # action_list = {'I', 'S', 'H'}
         if action == 0:
@@ -38,10 +39,17 @@ class Environment:
         self.state = (battery, time)
 
         if self.event == False and self.event_span_counter is None:
-            event_judge = np.random.uniform(0, 1)
-            if event_judge < self.event_prob:
+            ###### scenario A: event starts randomly with a given probability ######
+            #event_judge = np.random.uniform(0, 1)
+            #if event_judge < self.event_prob:
+            #    self.event_span_counter = 0
+            #    self.event = True
+            ###### scenario B: event occurs regularly ######
+            event_judge = bool((time - 1) % 58 == 0)   # event occurs once every 58 steps
+            if event_judge == True:
                 self.event_span_counter = 0
                 self.event = True
+
         if self.event == True and self.event_span_counter <= self.event_span:
             self.event_span_counter += 1
             self.event = True
@@ -54,8 +62,11 @@ class Environment:
 
         if not done:
             reward = 1.0    # each time the agent progresses one time step
+            reward += 0.1 * (battery - last_battery)     # penalty for using battery, reward for harvesting energy
             if self.event == True and action == 1:    # if successfully detects event
                 reward += self.event_detect_reward
+        elif time < self.total_T - 1:
+            reward = -10.0
         else:
             reward = 0.0
 
