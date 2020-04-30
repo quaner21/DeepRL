@@ -13,17 +13,15 @@ class Environment:
         self.event_span = 10
         self.event_detect_reward = 1.0
 
-        #self.action_space = ['I', 'S', 'H']
-
         self.time = int(0)
         self.battery = self.max_battery    # np.random.uniform(self.min_battery, self.max_battery)
         self.event = False
         self.event_span_counter = None
-        self.state = (self.battery, self.time)
+        self.state = (self.battery, self.time, self.event)
 
     def step(self, action):
         state = self.state
-        battery, time = state
+        battery, time, event = state
         last_battery = battery
 
         # action_list = {'I', 'S', 'H'}
@@ -36,26 +34,27 @@ class Environment:
 
         battery = min(max(battery, self.min_battery), self.max_battery)
         time += 1
-        self.state = (battery, time)
 
-        if self.event == False and self.event_span_counter is None:
+        if event == False and self.event_span_counter is None:
             ###### scenario A: event starts randomly with a given probability ######
             #event_judge = np.random.uniform(0, 1)
             #if event_judge < self.event_prob:
             #    self.event_span_counter = 0
-            #    self.event = True
+            #    event = True
             ###### scenario B: event occurs regularly ######
             event_judge = bool((time - 1) % 58 == 0)   # event occurs once every 58 steps
             if event_judge == True:
                 self.event_span_counter = 0
-                self.event = True
+                event = True
 
-        if self.event == True and self.event_span_counter <= self.event_span:
+        if event == True and self.event_span_counter <= self.event_span:
             self.event_span_counter += 1
-            self.event = True
-        if self.event == True and self.event_span_counter > self.event_span:
+            event = True
+        if event == True and self.event_span_counter > self.event_span:
             self.event_span_counter = None
-            self.event = False
+            event = False
+
+        self.state = (battery, time, event)
 
         done = battery == self.min_battery or time == self.total_T
         done = bool(done)
@@ -63,20 +62,20 @@ class Environment:
         if not done:
             reward = 1.0    # each time the agent progresses one time step
             reward += 0.1 * (battery - last_battery)     # penalty for using battery, reward for harvesting energy
-            if self.event == True and action == 1:    # if successfully detects event
+            if event == True and action == 1:    # if successfully detects event
                 reward += self.event_detect_reward
         elif time < self.total_T - 1:
             reward = -10.0
         else:
             reward = 0.0
 
-        return np.array(self.state), reward, self.event, done
+        return np.array(self.state), reward, event, done
 
     def reset(self):
         self.time = 0
         self.battery = self.max_battery   # np.random.uniform(self.min_battery, self.max_battery)
         self.event = False
         self.event_span_counter = None
-        self.state = (self.battery, self.time)
+        self.state = (self.battery, self.time, self.event)
 
         return np.array(self.state)

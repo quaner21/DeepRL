@@ -1,13 +1,15 @@
 from environment import Environment
 from agent import DQNAgent
 import numpy as np
+import pandas as pd
+import csv
 import io_plot as iop
 
 EPISODES = 1000
 
 if __name__ == "__main__":
     env = Environment()
-    state_size = 2
+    state_size = 3
     action_size = 3
     agent = DQNAgent(state_size, action_size)
     done = False

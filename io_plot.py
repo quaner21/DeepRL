@@ -30,3 +30,4 @@ def read_plot_save(filename, xlimit, xname, yname, plotname):
     for array in data:
         plot_and_save(array_pad_zero(list(map(float, array)), xlimit), xname, yname, plotname + str(index) + '.png')
         index += 1
+
